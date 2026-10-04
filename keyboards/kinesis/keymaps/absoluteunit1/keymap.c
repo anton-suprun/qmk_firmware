@@ -6,91 +6,72 @@ enum layer_names {
     _NUMPAD,
     _NAVIGATION,
     _SYMBOLS,
+    _LEAGUE,
 };
 
-// MACROS
-enum custom_keycodes {
-  CUSTOM_CAPS = SAFE_RANGE,
-};
-
-// STATE
-bool caps_lock_state = false;
-
-/// todo: set these up
-#define SPEECH_TO_TEXT     LGUI(KC_A)
+/// COMMON UTILS
+#define DICTATION          HYPR(KC_F14)
 #define SCREENSHOT_FULL    LCAG(KC_F16)
 #define SCREENSHOT_OPTIONS HYPR(KC_F16)
 #define LAST_APP           LGUI(KC_TAB)
 
 // TEXT NAVIGATION MACROS
-#define NEXT_WORD          LALT(KC_RIGHT)
-#define PREV_WORD          LALT(KC_LEFT)
-#define DEL_LAST_WORD      LALT(KC_BSPC)
+#define NEXT_WORD              LALT(KC_RIGHT)
+#define PREV_WORD              LALT(KC_LEFT)
+#define DEL_LAST_WORD          LALT(KC_BSPC)
 
 // RAYCAST MACROS
 #define C_HIS              RAG(KC_P)
-#define FILE_SEARCH        HYPR(KC_F15)
 #define WINDOWS            HYPR(KC_F17)
+#define SNIPPETS           HYPR(KC_F13)
 #define RAYCAST            LGUI(KC_SPC)
 
-// ALT LAYER STRINGS
-// Golang
-#define GO_EQUAL           ":="
-// Typescript
-// Python
-// Bash
-#define HOME_DIR           "~/."
-// Vim
-#define VIM_SHELL          ":!"
-#define VIM_LINE_REPLACE   ":s/"
-#define VIM_FILE_REPLACE   ":%s/"
-#define VIM_JUMP_LINE      ":%s/"
-#define VIM_SAVE           ":w"
-#define VIM_QUIT           ":q"
-#define VIM_SHELL          ":!"
+// notes
+// have 5 slots
+// needs:
+//      - using mac desktops
 
 // WINDOW MANAGEMENT
 
 // function keys: potentially even assign a function key to a common macos functionality and put it on the layer tap button on the bottom row
 // potentially make a button for alt+ on the thumb keys and then add all common combos there or just add a layer for all these common symbol combos
 // create a layer for function keys
-// create code for a sample bash script and trigger it with one of the top most buttons?
 
 // LAYER DEFINITIONS
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_pretty(
-    KC_BRID, KC_BRIU, KC_F1, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_TRNS,                          KC_MPRV, KC_MNXT, KC_BRID, KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU, KC_NO, QK_BOOT,
+    KC_BRID,             KC_BRIU, KC_F1,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   QK_COMBO_TOGGLE,  TG(_LEAGUE),    KC_MPRV, KC_MNXT, KC_BRID, KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU, TG(_LEAGUE), QK_BOOT,
 
-    KC_NO,       KC_1,         KC_2,         KC_3,         KC_4,                  KC_5,           KC_6, KC_7,         KC_8,            KC_9,           KC_0,            KC_NO,
-    CUSTOM_CAPS, KC_Q,         KC_W,         KC_E,         KC_R,                  KC_T,           KC_Y, KC_U,         KC_I,            KC_O,           KC_TAB,          KC_NO,
-    KC_DQT,      KC_A,         KC_S,         KC_D,         LT(_NAVIGATION, KC_F), KC_G,           KC_H, KC_J,         KC_K,            KC_L,           KC_P,            KC_COLN,
-    KC_QUOTE,    LSFT_T(KC_Z), LALT_T(KC_X), LGUI_T(KC_C), LCTL_T(KC_V),          KC_B,           KC_N, RCTL_T(KC_M), RGUI_T(KC_COMM), RALT_T(KC_DOT), RSFT_T(KC_SLSH), KC_PIPE,
-                 KC_PAST,      KC_PMNS,      KC_PPLS,      KC_PEQL,                                     KC_GRV,       KC_SCLN,         KC_EXLM,        KC_BSLS,
-       
-                                                                         WINDOWS, KC_NO,     KC_NO, RAYCAST,
-                                                                                  C_HIS,     SCREENSHOT_FULL,
-                                                  KC_BSPC, LT(_SYMBOLS, KC_ESC), KC_TAB,     KC_NO, LT(_NUMPAD, KC_ENTER), KC_SPC 
+    QK_LEAD,             KC_1,         KC_2,         KC_3,         KC_4,                  KC_5,         KC_6,   KC_7,         KC_8,            KC_9,           KC_0,            DICTATION,
+    QK_CAPS_WORD_TOGGLE, KC_Q,         KC_W,         KC_E,         KC_R,                  KC_T,         KC_Y,   KC_U,         KC_I,            KC_O,           KC_TAB,          SCREENSHOT_FULL,
+    KC_DQT,              KC_A,         KC_S,         KC_D,         LT(_NAVIGATION, KC_F), KC_G,         KC_H,   KC_J,         KC_K,            KC_L,           KC_P,            KC_COLN,
+    KC_QUOTE,            LSFT_T(KC_Z), LALT_T(KC_X), LGUI_T(KC_C), LCTL_T(KC_V),          KC_B,         KC_N,   RCTL_T(KC_M), RGUI_T(KC_COMM), RALT_T(KC_DOT), RSFT_T(KC_SLSH), KC_PIPE,
+    KC_PAST,             KC_MINS,      KC_PPLS,      KC_PEQL,                                                   KC_GRV,       KC_SCLN,         KC_EXLM,        KC_BSLS,
+
+                                                                              WINDOWS, SNIPPETS,        KC_NO, RAYCAST, // put something here
+                                                                                          C_HIS,        KC_NO,
+                                                          KC_BSPC, LT(_SYMBOLS, KC_F4),   LSFT(KC_SPC),        KC_NO, LT(_NUMPAD, KC_F4), KC_SPC // haven't been using enter nor esc on this row
   ),
   [_NUMPAD] = LAYOUT_pretty(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 
     KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                                    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
     KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                                    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
-    KC_TRNS,  KC_1,     KC_2,     KC_3,     KC_4,     KC_TRNS,                                    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+    KC_BSPC,  KC_1,     KC_2,     KC_3,     KC_4,     KC_SPC,                                    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
     KC_TRNS,  KC_5,     KC_6,     KC_7,     KC_8,     KC_TRNS,                                    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
               KC_PAST,  KC_PMNS,  KC_PPLS,  KC_PEQL,                                                        KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
 
                                                                 KC_NO, KC_NO,   KC_NO, KC_NO,
-                                                                       KC_NO,   KC_NO,
+                                                                       KC_NO,   KC_TRNS,
                                                            KC_0, KC_9, KC_NO,   KC_NO, KC_TRNS, KC_SPC
   ),
   [_SYMBOLS] = LAYOUT_pretty(
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 
     KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                KC_TRNS, KC_RPRN, KC_LPRN, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                KC_CIRC, KC_RCBR, KC_LCBR, KC_DLR,  KC_TRNS, KC_TRNS,
-    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                KC_TRNS, KC_RBRC, KC_LBRC, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                KC_TRNS, KC_LPRN, KC_RPRN, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                KC_CIRC, KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS, KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                KC_TRNS, KC_LBRC, KC_RBRC, KC_TRNS, KC_TRNS, KC_TRNS,
               KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 
                                                 KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
@@ -110,8 +91,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                          KC_TRNS,     KC_TRNS,
                                        KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
   ),
+  [_LEAGUE] = LAYOUT_pretty(
+    KC_BRID,             KC_BRIU, KC_F1,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   QK_COMBO_TOGGLE,  TG(_LEAGUE),    KC_MPRV, KC_MNXT, KC_BRID, KC_BRIU, KC_MUTE, KC_VOLD, KC_VOLU, TG(_LEAGUE), QK_BOOT,
+
+    QK_LEAD,             KC_1,         KC_2,         KC_3,         KC_4,                  KC_5,         KC_6,   KC_7,         KC_8,            KC_9,           KC_0,            DICTATION,
+    QK_CAPS_WORD_TOGGLE, KC_Q,         KC_W,         KC_E,         KC_R,                  KC_T,         KC_Y,   KC_U,         KC_I,            KC_O,           KC_TAB,          SCREENSHOT_FULL,
+    KC_DQT,              KC_A,         KC_S,         KC_D,          KC_F, KC_G,         KC_H,   KC_J,         KC_K,            KC_L,           KC_P,            KC_COLN,
+    KC_QUOTE,            LSFT_T(KC_Z), KC_X, KC_C, KC_V,          KC_B,         KC_N,   KC_M, KC_COMM, KC_DOT, RSFT_T(KC_SLSH), KC_PIPE,
+    KC_PAST,             KC_MINS,      KC_PPLS,      KC_PEQL,                                                   KC_GRV,       KC_SCLN,         KC_EXLM,        KC_BSLS,
+
+                                                                              WINDOWS, SNIPPETS,        KC_NO, RAYCAST, // put something here
+                                                                                          C_HIS,        KC_NO,
+                                                          KC_BSPC, LALT(KC_BSPC),   KC_NO,        KC_NO, LT(_NUMPAD, KC_F4), KC_SPC // haven't been using enter nor esc on this row
+  ),
 };
 
+// LEAGUE ideas
+// - ctrl+a, ctrl+c in one key
+// - ctrl+v in one key
+// - change focus character from space to backspace
 
 // Override Definitions
 const key_override_t left_word_override     = ko_make_basic(MOD_MASK_ALT, KC_H, PREV_WORD);
@@ -143,33 +141,7 @@ combo_t key_combos[COMBO_COUNT] = {
 
 // Macro Definitions
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
-  // static uint16_t timer;
-
   switch (keycode) {
-
-   // case RSFT_UNDS:
-   //   if(record->event.pressed) {
-   //     timer = timer_read();
-   //     register_code(KC_RSFT);
-   //   } else {
-   //     unregister_code(KC_RSFT);
-   //     if (timer_elapsed(timer) < TAPPING_TERM) {
-   //       SEND_STRING("_");
-   //     }
-   //   }
-   //   return false;
- 
-    case CUSTOM_CAPS:
-        if (record->event.pressed) {
-            if (caps_lock_state) {
-                caps_lock_state = false;
-            } else {
-                caps_lock_state = true;
-            }
-            tap_code(KC_CAPS);
-        }
-        return false;
 
     case KC_ESC:
         if (record->event.pressed) {
@@ -179,10 +151,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (layer_state_is(_NUMPAD)) {
                 layer_off(_NUMPAD);
             }
-            if (caps_lock_state) {
-                tap_code(KC_CAPS);
-                caps_lock_state = false;
-            }
+            caps_word_off();
         }
         return false;
 
@@ -193,7 +162,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_SCLN);
                 add_mods(MOD_BIT(KC_LALT));
                 return false;
-            } 
+            }
         } else {
             unregister_code(KC_J);
             if (layer_state_is(_NUMPAD)) {
@@ -209,7 +178,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code16(KC_COLN);
                 add_mods(MOD_BIT(KC_LALT));
                 return false;
-            } 
+            }
         } else {
             unregister_code(KC_K);
             if (layer_state_is(_NUMPAD)) {
@@ -381,3 +350,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+// Configure which keys are "word breaking"
+
+// You can define the caps_word_press_user(uint16_t keycode) callback to configure which keys should be shifted and which keys are considered "word breaking" and stop Caps Word.
+//
+// The callback is called on every key press while Caps Word is active. When the key should be shifted (that is, a letter key),
+// the callback should call add_weak_mods(MOD_BIT(KC_LSFT)) to shift the key. Returning true continues the current "word,"
+// while returning false is "word breaking" and deactivates Caps Word. The default callback is
+//
+ bool caps_word_press_user(uint16_t keycode) {
+     switch (keycode) {
+         // Keycodes that continue Caps Word, with shift applied.
+         case KC_A ... KC_Z:
+         case KC_MINS:
+             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+             return true;
+         // Keycodes that continue Caps Word, without shifting.
+         case KC_1 ... KC_0:
+         case KC_BSPC:
+         case KC_UNDS:
+             return true;
+         default:
+             return false;  // Deactivate Caps Word.
+     }
+ }
